@@ -90,7 +90,8 @@ userRouter.post("/add", authMiddleware, (req, res) => {
       }).catch((err) => {
         console.log(err);
         return res.send({
-          saved: false
+          saved: false,
+          patientNumber: "notfound"
         });
       });
     });
@@ -112,7 +113,8 @@ userRouter.post("/add", authMiddleware, (req, res) => {
         console.log("updated many tests!!!");
       }).catch((err) => {
         res.send({
-          saved: false
+          saved: false,
+          patientNumber: "notfound"
         });
       });
     });
@@ -124,7 +126,8 @@ userRouter.post("/add", authMiddleware, (req, res) => {
   }).catch((e) => {
     console.log("Error in saving new patient", e);
     res.send({
-      saved: false
+      saved: false,
+      patientNumber: "notfound"
     });
   });
 });
