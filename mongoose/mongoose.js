@@ -3,10 +3,7 @@ const autoIncrement = require("mongoose-auto-increment");
 mongoose.Promise = global.Promise;
 
 
-let connection = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/friends', {
-  useMongoClient: true,
-  promiseLibrary: global.Promise
-});
+let connection = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/friends');
 
 autoIncrement.initialize(connection);
 

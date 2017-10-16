@@ -124,6 +124,11 @@ router.post("/remove-token", (req, res) => {
 });
 
 
+
+router.get("/sample", (req, res) => {
+  res.send("all is well with nodejs");
+});
+
 module.exports = {
   router,
   authMiddleware
