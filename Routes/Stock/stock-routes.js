@@ -134,7 +134,7 @@ stockRouter.get("/getAllMedicines", authMiddleware, (req, res) => {
   myMedicines.find({}).then((medArr) => {
     if (medArr.length === 0) {
       return res.send({
-        status: "fail"
+        status: "noneFound"
       });
     }
     return res.send({
