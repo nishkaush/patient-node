@@ -22,6 +22,7 @@ var MedicalHistorySchema = new mongoose.Schema({
   opdFee: "",
 });
 
+
 var patientSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -65,8 +66,21 @@ patientSchema.plugin(autoIncrement.plugin, {
   field: "patientNumber",
   startAt: 1
 });
+
+
+var opdNumberSchema = new mongoose.Schema({
+  dateCreated: ""
+});
+opdNumberSchema.plugin(autoIncrement.plugin, {
+  model: "myOpdNumber",
+  field: "opdNumber",
+  startAt: 1
+});
+
 var myPatients = mongoose.model("myPatients", patientSchema);
+var myOpdNumber = mongoose.model("myOpdNumber", opdNumberSchema);
 
 module.exports = {
-  myPatients
+  myPatients,
+  myOpdNumber
 };

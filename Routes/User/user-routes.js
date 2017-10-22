@@ -2,7 +2,8 @@ const express = require("express");
 const _ = require("lodash");
 const moment = require("moment");
 const {
-  myPatients
+  myPatients,
+  myOpdNumber
 } = require("./../../models/patients");
 const {
   myMedicines
@@ -52,7 +53,6 @@ userRouter.post("/add", authMiddleware, (req, res) => {
       issuedAt: Date.now()
     }];
   }
-
   var newPatient = new myPatients({
     name: req.body.form.name,
     email: req.body.form.email,
@@ -67,9 +67,15 @@ userRouter.post("/add", authMiddleware, (req, res) => {
     createdBy: req.payload.email,
     createdAt: Date.now()
   });
-  newPatient.save().then((patient) => {
-    //now lets deduct the medicines from the main stock
 
+  var newOpdNumber = new myOpdNumber({
+    dateCreated: Date.now()
+  });
+
+  var opdNumberToSend = "";
+  newPatient.save().then((patient) => {
+
+    //now lets deduct the medicines from the main stock
     req.body.medData.forEach((e) => {
       myMedicines.updateMany({
         name: e.name
@@ -119,9 +125,14 @@ userRouter.post("/add", authMiddleware, (req, res) => {
       });
     });
     // Finally send a good response back if all is well
-    res.send({
-      saved: true,
-      patientNumber: patient.patientNumber
+    //creating a new global opd number
+    newOpdNumber.save().then((opd) => {
+      opdNumberToSend = opd.opdNumber;
+      res.send({
+        saved: true,
+        patientNumber: patient.patientNumber,
+        opdNumber: opdNumberToSend
+      });
     });
   }).catch((e) => {
     console.log("Error in saving new patient", e);
@@ -267,9 +278,17 @@ userRouter.post("/addPrescription", authMiddleware, (req, res) => {
       });
     });
 
-    return res.send({
-      update: "success",
-      updatedPatient: patient
+
+    let newOpdNumber = new myOpdNumber({
+      dateCreated: Date.now()
+    });
+    newOpdNumber.save().then((opd) => {
+      var opdNumberToSend = opd.opdNumber;
+      return res.send({
+        update: "success",
+        updatedPatient: patient,
+        opdNumber: opdNumberToSend
+      });
     });
   }).catch((err) => {
     console.log(err);

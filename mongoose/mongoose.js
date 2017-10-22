@@ -4,9 +4,10 @@ mongoose.Promise = global.Promise;
 
 
 let connection = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/friends');
-// let connection = mongoose.connect('mongodb://localhost:27017/friends' || process.env.MONGODB_URI);
+// let connection = mongoose.connect('mongodb://localhost:27017/friends', {
+//   useMongoClient: true,
+// });
 
-// process.env.MONGODB_URI ||
 autoIncrement.initialize(connection);
 
 module.exports = {
